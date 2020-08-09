@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\jense\\Anaconda3\\envs\\fieldrobot\\python.exe"
+    "python.pythonPath": "C:\\Users\\jense\\Anaconda3\\envs\\fieldrobot\\python.exe",
+    "python.formatting.provider": "black"
 }
