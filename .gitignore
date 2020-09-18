@@ -7,6 +7,10 @@ __pycache__/
 *.so
 # Video
 .mp4
+
+# Data
+segnet_model/road_dataset
+.png
 # Distribution / packaging
 .Python
 build/
