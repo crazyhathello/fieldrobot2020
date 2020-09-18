@@ -123,3 +123,12 @@ cap.release()
 
 # Closes all the frames
 cv2.destroyAllWindows()
+
+
+#use ultrasonic sensor instead of dms
+#front camera ultrawide
+#side is fine with normal
+#Fully convoluted network FCN for line detection
+#大電流小電流中間金屬片@ground for buffer
+#馬達斷電開關
+#

@@ -1,0 +1,1 @@
+g++ check_camera_ready.cpp lane_tracking_car.cpp lane_tracking.cpp turn_determination_hardcoding.cpp send_to_arduino.cpp mission_decision.cpp TX2forARM/armright_cam_config.cpp TX2forARM/armright_cam_utils.cpp TX2forARM/pot_watering.cpp TX2forARM/apple_gripping.cpp TX2forARM/arm_control.cpp TX2forARM/timer.cpp -o silver_leopard_2 `pkg-config --cflags --libs opencv` -std=c++11
