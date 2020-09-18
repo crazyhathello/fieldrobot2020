@@ -1,0 +1,7 @@
+{
+    "board": "arduino:avr:mega",
+    "configuration": "cpu=atmega2560",
+    "programmer": "AVR ISP",
+    "port": "COM10",
+    "sketch": "Motor control\\Motor_test.ino"
+}
