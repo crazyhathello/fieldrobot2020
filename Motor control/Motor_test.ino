@@ -1,19 +1,38 @@
-int ena = 11;
-int left1 = 10;
-int left2 = 9;
-int right1 = 8;
-int right2 = 7;
-int enb = 6;
+int ENA = 2;
+int ENB = 4;
+int IN1A = 3;
+int IN1B = 5;
+int IN2A = 6;
+int IN2B = 9;
 
 void setup()
 {
-    pinMode(left1, OUTPUT);
-    pinMode(left2, OUTPUT);
-    pinMode(right1, OUTPUT);
-    pinMode(ena, OUTPUT);
-    pinMode(enb, OUTPUT);
-    Serial.begin(9600);
+    pinMode(ENA, OUTPUT);
+    pinMode(ENB, OUTPUT);
+    pinMode(IN1A, OUTPUT);
+    pinMode(IN1B, OUTPUT);
+    pinMode(IN2A, OUTPUT);
+    pinMode(IN2B, OUTPUT);
 }
 void loop(){
+
     delay(500);
+}
+
+void forward(int pwma, int pwmb){
+    digitalWrite(ENA,HIGH);
+    digitalWrite(ENB,HIGH);
+    analogWrite(IN1A,pwma);
+    analogWrite(IN2A, 0);
+    analogWrite(IN1B,pwmb);
+    analogWrite(IN2B, 0);
+}
+
+void backward(int pwma, int pwmb){
+    digitalWrite(ENA,HIGH);
+    digitalWrite(ENB,HIGH);
+    analogWrite(IN1A,0);
+    analogWrite(IN2A,pwma);
+    analogWrite(IN1B,0);
+    analogWrite(IN2B,pwmb);
 }
