@@ -15,8 +15,10 @@ void setup()
     pinMode(IN2B, OUTPUT);
 }
 void loop(){
-
-    delay(500);
+    forward(220,220);
+    delay(5000);
+    stop();
+    delay(3000);
 }
 
 void forward(int pwma, int pwmb){
@@ -35,4 +37,9 @@ void backward(int pwma, int pwmb){
     analogWrite(IN2A,pwma);
     analogWrite(IN1B,0);
     analogWrite(IN2B,pwmb);
+}
+
+void stop(){
+    digitalWrite(ENA,LOW);
+    digitalWrite(ENB,LOW);
 }
