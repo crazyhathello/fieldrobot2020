@@ -35,7 +35,7 @@ ser = startSerialCom()
 #runMotor(ser,0,pwmL,pwmR)
 
 #video = cv2.VideoCapture("camera_test_code\\test_video.mp4")
-video = cv2.VideoCapture(1)
+video = cv2.VideoCapture(0)
 if video.isOpened() == False:
     print("Error opening video stream or file")
 if checkHSV(video):
