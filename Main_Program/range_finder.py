@@ -1,7 +1,7 @@
 import cv2
 import sys
 import numpy as np
-def find_range(img_path):
+def find_range(img):
 
     def nothing(x):
         pass
@@ -26,7 +26,7 @@ def find_range(img_path):
     hMin = sMin = vMin = hMax = sMax = vMax = 0
     phMin = psMin = pvMin = phMax = psMax = pvMax = 0
 
-    img = cv2.imread(img_path)
+    #input_img = cv2.imread(img)
     output = img
     waitTime = 33
 
