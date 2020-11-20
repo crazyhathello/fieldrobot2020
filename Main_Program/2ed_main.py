@@ -42,6 +42,8 @@ if checkHSV(video):
     print("HSV ready")
 
 while STATE==0:
+    pwmL = pwmL_base
+    pwmR = pwmR_base
     ret,frame = video.read()
     if ret == True:
         print("into loop")
