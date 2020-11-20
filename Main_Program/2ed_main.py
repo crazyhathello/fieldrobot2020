@@ -3,10 +3,13 @@ import cv2
 import numpy as np
 import range_finder
 STATE = 0
-pwmL = 205
-pwmR = 195
+pwmL_base = 205
+pwmR_base = 195
+pwmL = 0
+pwmR = 0
 x_delta = 0
 pwm_delta = 0
+
 
 def startSerialCom():
     ser = serial.Serial(
@@ -39,7 +42,6 @@ if checkHSV(video):
     print("HSV ready")
 
 while STATE==0:
-
     ret,frame = video.read()
     if ret == True:
         print("into loop")
@@ -129,8 +131,8 @@ while STATE==0:
 
         pwm_delta = x_delta/2
         if x_delta >0:
-            pwmL += x_delta
-            pwmR -= x_delta
+            pwmL += pwmL_base + x_delta
+            pwmR -= pwmR_base + x_delta
         else:
             pwmL -= x_delta
             pwmR += x_delta
