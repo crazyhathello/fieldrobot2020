@@ -170,7 +170,7 @@ while STATE==0:
             cv2.imshow("mask", close)
             if cv2.waitKey(25) & 0xFF == ord("q"):
                 break
-        time.sleep(0.05)
+        time.sleep(0.1)
     else:
         break
 
