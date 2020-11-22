@@ -2,6 +2,7 @@ import serial
 import cv2
 import numpy as np
 import range_finder
+import time
 STATE = 0
 pwmL_base = 205
 pwmR_base = 195
@@ -162,3 +163,5 @@ if GUI:
     video.release()
     cv2.destroyAllWindows()
 runMotor(ser,4,000,000)
+time.sleep(2)
+runMotor(ser,3,200,200)
