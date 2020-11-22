@@ -17,7 +17,7 @@ def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
         baudrate=9600,
-        timeout = 0.1
+        timeout = 5
     )
     print('Opening serial port...')
     time.sleep(2)
@@ -31,11 +31,11 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     print(input)
     ser.flushInput()
     ser.write(str.encode(input))
-    time.sleep(0.5)
+    time.sleep(1)
     ser_bytes = ser.readline()
     arduino = ser_bytes.decode()
     print(str.encode(input))
-    print(arduino)
+    print('ddddddddddddddddddddd ',arduino)
 
 def checkHSV(capture):
     if GUI:
