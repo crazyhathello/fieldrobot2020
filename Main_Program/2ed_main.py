@@ -31,8 +31,8 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     ser.flushInput()
     ser.write(str.encode(input))
     time.sleep(0.05)
-    arduino = ser.readline()
-    arduino = arduino.decode()
+    ser_bytes = ser.readline()
+    arduino = ser_bytes.decode()
     print(str.encode(input))
     print(arduino)
 
@@ -53,12 +53,6 @@ if checkHSV(video):
     print("HSV ready")
 
 while STATE==0:
-    ser.flushInput()
-    ser_bytes = ser.readline()
-    arduino = ser_bytes.decode()
-    print(arduino)
-    #print('Decoded bytes: ',decoded_bytes)
-
     pwmL = pwmL_base
     pwmR = pwmR_base
     ret,frame = video.read()
