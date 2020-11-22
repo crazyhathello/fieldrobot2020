@@ -28,7 +28,7 @@ void loop()
   if (Serial.available())
   {
     Serial.readBytes(cmd, 9);
-    Serial.println("recieved");
+    //Serial.println("recieved");
     dir = cmd[0];
     for (int i = 0; i < 3; i++)
     {
@@ -62,7 +62,8 @@ void loop()
     stopp();
     break;
   }
-
+    //Serial.flush()
+    delay(50);
 }
 
 

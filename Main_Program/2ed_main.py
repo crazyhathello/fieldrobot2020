@@ -64,9 +64,9 @@ if checkHSV(video):
 
 runMotor(ser,0,200,200)
 time.sleep(2)
-runMotor(ser,3,000,000)
+runMotor(ser,4,000,000)
 time.sleep(2)
-runMotor(ser,2,200,200)
+runMotor(ser,3,200,200)
 time.sleep(2)
 runMotor(ser,4,000,000)
 time.sleep(2)
