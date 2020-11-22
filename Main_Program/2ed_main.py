@@ -52,7 +52,7 @@ if checkHSV(video):
     print("HSV ready")
 
 runMotor(ser,0,200,200)
-time.sleep(2)
+time.sleep(10)
 runMotor(ser,4,0,0)
 time.sleep(0.5)
 runMotor(ser,3,200,200)
