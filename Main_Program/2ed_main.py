@@ -10,7 +10,7 @@ pwmL = 0
 pwmR = 0
 x_delta = 0
 pwm_delta = 0
-HSV = True
+HSV = False
 GUI = True
 
 def startSerialCom():
@@ -170,6 +170,7 @@ while STATE==0:
             cv2.imshow("mask", close)
             if cv2.waitKey(25) & 0xFF == ord("q"):
                 break
+        time.sleep(0.05)
     else:
         break
 
