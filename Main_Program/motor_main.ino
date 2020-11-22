@@ -5,7 +5,7 @@ int IN1L = 8; // Arduino PWM output pin 5; connect to IBT-2 pin 1 (RPWM); Left w
 int IN2L = 9; // Arduino PWM output pin 6; connect to IBT-2 pin 2 (LPWM); Left wheel
 
 int dir = 0, pwmR = 0, pwmL = 0;
-char cmd[9], pwm1[3], pwm2[3];
+char cmd[9], pwm1[4], pwm2[4];
 
 void setup()
 {
@@ -28,16 +28,20 @@ void loop()
   if (Serial.available())
   {
     Serial.readBytes(cmd, 9);
-    dir = atoi(cmd[0]);
+    Serial.println("recieved");
+    dir = cmd[0];
     for (int i = 0; i < 3; i++)
     {
       pwm1[i] = cmd[i + 2];
       pwm2[i] = cmd[i + 6];
     }
+    dir = cmd[0]-'0';
+    pwm1[3] = '\0';
+    pwm2[3] = '\0';
     pwmL = atoi(pwm1);    //pwm1 is left wheel pwm
     pwmR = atoi(pwm2);    //pwm2 is right wheel pwm
-    Serial.print("cmd: ");  //, "; dir: ", dir, "; pwm1: ", pwm1, "; pwm2: ", pwm2
-    Serial.println(cmd);
+    //Serial.print("cmd: ");  //, "; dir: ", dir, "; pwm1: ", pwm1, "; pwm2: ", pwm2
+    //Serial.println(cmd);
   }
 
   switch (dir)    //dir: 0(forward), 1(right), 2(left), 3(backward), 4(stop)

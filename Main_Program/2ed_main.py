@@ -173,5 +173,5 @@ if GUI:
     cv2.destroyAllWindows()
 runMotor(ser,4,000,000)
 time.sleep(2)
-runMotor(ser,3,200,200)
+#runMotor(ser,3,200,200)
 ser.close()
