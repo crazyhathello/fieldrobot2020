@@ -132,7 +132,8 @@ while STATE==0:
                 cv2.line(frame,MID_LINE[0],MID_LINE[1],(0,0,255),2)
                 x_delta = MID_LINE[0][0]-MID_LINE[1][0]
         print(x_delta)
-        pwm_delta = x_delta/2
+        pwm_delta = x_delta/3
+        int(pwm_delta)
         if x_delta <0:
             pwmL -= pwm_delta
             pwmR += pwm_delta
