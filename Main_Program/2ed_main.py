@@ -131,9 +131,9 @@ while STATE==0:
                 x_delta = MID_LINE[0][0]-MID_LINE[1][0]
         print(x_delta)
         pwm_delta = x_delta/2
-        if x_delta >0:
-            pwmL += pwm_delta
-            pwmR -= pwm_delta
+        if x_delta <0:
+            pwmL -= pwm_delta
+            pwmR += pwm_delta
         else:
             pwmL -= pwm_delta
             pwmR += pwm_delta
