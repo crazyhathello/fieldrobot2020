@@ -52,10 +52,10 @@ if checkHSV(video):
     print("HSV ready")
 
 runMotor(ser,0,200,200)
-time.sleep(10)
+time.sleep(2)
 runMotor(ser,4,000,000)
-time.sleep(0.5)
-runMotor(ser,3,200,200)
+time.sleep(2)
+runMotor(ser,2,200,200)
 time.sleep(2)
 runMotor(ser,4,000,000)
 time.sleep(2)
@@ -170,7 +170,7 @@ while STATE==0:
             cv2.imshow("mask", close)
             if cv2.waitKey(25) & 0xFF == ord("q"):
                 break
-        time.sleep(0.1)
+        time.sleep(0.01)
     else:
         break
 
