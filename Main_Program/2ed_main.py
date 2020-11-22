@@ -130,14 +130,13 @@ while STATE==0:
                 cv2.line(frame,MID_LINE[0],MID_LINE[1],(0,0,255),2)
                 x_delta = MID_LINE[0][0]-MID_LINE[1][0]
         print(x_delta)
-
         pwm_delta = x_delta/2
         if x_delta >0:
-            pwmL += pwmL_base + x_delta
-            pwmR -= pwmR_base + x_delta
+            pwmL += pwm_delta
+            pwmR -= pwm_delta
         else:
-            pwmL -= x_delta
-            pwmR += x_delta
+            pwmL -= pwm_delta
+            pwmR += pwm_delta
         
         runMotor(ser,0,pwmL,pwmR)
         output = cv2.hconcat([frame, res])
