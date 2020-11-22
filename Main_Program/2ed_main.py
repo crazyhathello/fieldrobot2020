@@ -53,11 +53,11 @@ if checkHSV(video):
 
 runMotor(ser,0,200,200)
 time.sleep(10)
-runMotor(ser,4,0,0)
+runMotor(ser,4,000,000)
 time.sleep(0.5)
 runMotor(ser,3,200,200)
 time.sleep(2)
-runMotor(ser,4,0,0)
+runMotor(ser,4,000,000)
 time.sleep(2)
 while STATE==0:
     pwmL = pwmL_base
