@@ -137,7 +137,12 @@ while STATE==0:
         else:
             pwmL -= pwm_delta
             pwmR += pwm_delta
-        
+        # pwm gate
+        if pwmL > 250:
+            pwmL = 250
+        if pwmR > 250:
+            pwmR = 250
+
         runMotor(ser,0,pwmL,pwmR)
         output = cv2.hconcat([frame, res])
         cv2.imshow("Output", output)
