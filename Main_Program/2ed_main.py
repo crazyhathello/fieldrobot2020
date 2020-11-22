@@ -10,6 +10,7 @@ pwmR = 0
 x_delta = 0
 pwm_delta = 0
 
+GUI = False
 
 def startSerialCom():
     ser = serial.Serial(
@@ -27,8 +28,9 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     ser.write(str.encode(input))
 
 def checkHSV(capture):
-    ret,frame = capture.read()
-    range_finder.find_range(frame)
+    if GUI:
+        ret,frame = capture.read()
+        range_finder.find_range(frame)
     return True
 
 ser = startSerialCom()
@@ -144,15 +146,16 @@ while STATE==0:
             pwmR = 250
 
         runMotor(ser,0,pwmL,pwmR)
-        output = cv2.hconcat([frame, res])
-        cv2.imshow("Output", output)
-        cv2.imshow("mask", close)
-        if cv2.waitKey(25) & 0xFF == ord("q"):
-            break
+        if GUI:    
+            output = cv2.hconcat([frame, res])
+            cv2.imshow("Output", output)
+            cv2.imshow("mask", close)
+            if cv2.waitKey(25) & 0xFF == ord("q"):
+                break
     else:
         break
 
 
-
-video.release()
-cv2.destroyAllWindows()
+if GUI:
+    video.release()
+    cv2.destroyAllWindows()
