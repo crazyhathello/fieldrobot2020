@@ -11,13 +11,15 @@ pwmR = 0
 x_delta = 0
 pwm_delta = 0
 
-GUI = True
+GUI = False
 
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
         baudrate=9600,
     )
+    print('Opening serial port...')
+    time.sleep(2)
     if (ser):
         print("Serial communication success!!")
         return ser
@@ -46,9 +48,10 @@ if checkHSV(video):
     print("HSV ready")
 
 while STATE==0:
-    #ser.flushInput()
-    #ser_bytes = ser.readline()
-    #decoded_bytes = float(ser_bytes[0:len(ser_bytes)-2].decode("utf-8"))
+    ser.flushInput()
+    ser_bytes = ser.readline()
+    arduino = ser_bytes.decode()
+    print(arduino)
     #print('Decoded bytes: ',decoded_bytes)
 
     pwmL = pwmL_base
@@ -170,3 +173,4 @@ if GUI:
 runMotor(ser,4,000,000)
 time.sleep(2)
 runMotor(ser,3,200,200)
+ser.close()
