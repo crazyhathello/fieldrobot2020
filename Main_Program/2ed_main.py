@@ -17,6 +17,7 @@ def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
         baudrate=9600,
+        timeout = 0
     )
     print('Opening serial port...')
     time.sleep(2)
