@@ -11,7 +11,7 @@ pwmR = 0
 x_delta = 0
 pwm_delta = 0
 HSV = False
-GUI = True
+GUI = False
 
 def startSerialCom():
     ser = serial.Serial(
@@ -26,7 +26,18 @@ def startSerialCom():
 
 def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backward)
     print("Through Serial Communication :")
-    input=str(dir)+","+str(pwm1)+","+str(pwm2)
+    pwm1 = str(pwm1)
+    pwm2 = str(pwm2)
+    if len(pwm1) == 2:
+        pwm1 = "0" + pwm1
+    if len(pwm2) == 2:
+        pwm2 = "0" + pwm2
+    if len(pwm1) == 1:
+        pwm1 = "00" + pwm1
+    if len(pwm2) == 1:
+        pwm2 = "00" + pwm2
+
+    input=str(dir)+","+pwm1+","+pwm2
     print(input)
     # ser.flushInput()
     ser.write(str.encode(input))
