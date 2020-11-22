@@ -4,8 +4,8 @@ import numpy as np
 import range_finder
 import time
 STATE = 0
-pwmL_base = 215
-pwmR_base = 205
+pwmL_base = 155
+pwmR_base = 145
 pwmL = 0
 pwmR = 0
 x_delta = 0
@@ -64,7 +64,7 @@ if checkHSV(video):
 
 runMotor(ser,0,200,200)
 time.sleep(2)
-runMotor(ser,4,000,000)
+runMotor(ser,3,000,000)
 time.sleep(2)
 runMotor(ser,2,200,200)
 time.sleep(2)
