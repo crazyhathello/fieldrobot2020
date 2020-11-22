@@ -46,10 +46,10 @@ if checkHSV(video):
     print("HSV ready")
 
 while STATE==0:
-    ser.flushInput()
-    ser_bytes = ser.readline()
-    decoded_bytes = float(ser_bytes[0:len(ser_bytes)-2].decode("utf-8"))
-    print('Decoded bytes: ',decoded_bytes)
+    #ser.flushInput()
+    #ser_bytes = ser.readline()
+    #decoded_bytes = float(ser_bytes[0:len(ser_bytes)-2].decode("utf-8"))
+    #print('Decoded bytes: ',decoded_bytes)
 
     pwmL = pwmL_base
     pwmR = pwmR_base
