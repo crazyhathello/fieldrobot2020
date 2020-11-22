@@ -5,7 +5,7 @@ int IN1L = 8; // Arduino PWM output pin 5; connect to IBT-2 pin 1 (RPWM); Left w
 int IN2L = 9; // Arduino PWM output pin 6; connect to IBT-2 pin 2 (LPWM); Left wheel
 
 int dir = 0, pwmR = 0, pwmL = 0;
-char cmd[7], pwm1[3], pwm2[3];
+char cmd[9], pwm1[3], pwm2[3];
 
 void setup()
 {
@@ -19,22 +19,28 @@ void setup()
 
 void loop()
 {
+//  forward(255, 100);
+//  delay(2000);
+//  left(255, 255);
+//  delay(1450);
+//  right(255, 255);
+//  delay(1450);
   if (Serial.available())
   {
-    Serial.readBytes(cmd, 10);
+    Serial.readBytes(cmd, 9);
     dir = atoi(cmd[0]);
     for (int i = 0; i < 3; i++)
     {
-      pwm1[i] = cmd[i + 1];
-      pwm2[i] = cmd[i + 4];
+      pwm1[i] = cmd[i + 2];
+      pwm2[i] = cmd[i + 6];
     }
-    pwmR = atoi(pwm1);
-    pwmL = atoi(pwm2);
+    pwmL = atoi(pwm1);    //pwm1 is left wheel pwm
+    pwmR = atoi(pwm2);    //pwm2 is right wheel pwm
     Serial.print("cmd: ");  //, "; dir: ", dir, "; pwm1: ", pwm1, "; pwm2: ", pwm2
     Serial.println(cmd);
   }
 
-  switch (dir)    //dir: 0(forward), 1(right), 2(left), 3(backward)
+  switch (dir)    //dir: 0(forward), 1(right), 2(left), 3(backward), 4(stop)
   {
   case 0:
     forward(pwmL, pwmR);
@@ -47,6 +53,9 @@ void loop()
     break;
   case 3:
     backward(pwmL, pwmR);
+    break;
+  case 4:
+    stopp();
     break;
   }
 
@@ -106,24 +115,4 @@ void stopp()
   analogWrite(IN2L, 0);
   analogWrite(IN1R, 0);
   analogWrite(IN2R, 0);
-}
-
-void serialread()   //其他serial用法 沒用到 到時候再刪
-{
-  String s = "";
-  while (Serial.available())
-  {
-    char c = Serial.read();
-    if (c != '\n')
-    {
-      s += c;
-    }
-    delay(5); // 沒有延遲的話 UART 串口速度會跟不上Arduino的速度，會導致資料不完整
-  }
-
-  if (s != "")
-  {
-    Serial.println(s);
-  }
-  return s;
 }

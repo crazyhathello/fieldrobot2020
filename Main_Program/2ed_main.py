@@ -26,8 +26,8 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     print("Through Serial Communication :")
     input=str(dir)+","+str(pwm1)+","+str(pwm2)
     print(input)
-    ser.write(str.encode(input))
-    print(str.encode(input))
+    ser.write(str.encode('ascii',input))
+    print(str.encode('ascii',input))
 
 def checkHSV(capture):
     if GUI:
