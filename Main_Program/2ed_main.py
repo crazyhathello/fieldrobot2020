@@ -4,8 +4,8 @@ import numpy as np
 import range_finder
 import time
 STATE = 0
-pwmL_base = 205
-pwmR_base = 195
+pwmL_base = 215
+pwmR_base = 205
 pwmL = 0
 pwmR = 0
 x_delta = 0
