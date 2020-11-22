@@ -28,8 +28,13 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     print("Through Serial Communication :")
     input=str(dir)+","+str(pwm1)+","+str(pwm2)
     print(input)
+    ser.flushInput()
     ser.write(str.encode(input))
+    time.sleep(0.05)
+    arduino = ser.readline()
+    arduino = arduino.decode()
     print(str.encode(input))
+    print(arduino)
 
 def checkHSV(capture):
     if GUI:
@@ -157,6 +162,7 @@ while STATE==0:
             pwmR = 250
 
         runMotor(ser,0,pwmL,pwmR)
+        
         if GUI:    
             output = cv2.hconcat([frame, res])
             cv2.imshow("Output", output)
