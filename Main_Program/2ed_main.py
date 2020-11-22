@@ -29,13 +29,13 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     print("Through Serial Communication :")
     input=str(dir)+","+str(pwm1)+","+str(pwm2)
     print(input)
-    ser.flushInput()
+    # ser.flushInput()
     ser.write(str.encode(input))
-    time.sleep(0.05)
-    ser_bytes = ser.readline()
-    arduino = ser_bytes.decode()
-    print(str.encode(input))
-    print('arduino: ',arduino)
+    # time.sleep(0.05)
+    # ser_bytes = ser.readline()
+    # arduino = ser_bytes.decode()
+    # print(str.encode(input))
+    # print('arduino: ',arduino)
 
 def checkHSV(capture):
     if GUI:
