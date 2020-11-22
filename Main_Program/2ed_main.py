@@ -26,6 +26,7 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     input=str(dir)+","+str(pwm1)+","+str(pwm2)
     print(input)
     ser.write(str.encode(input))
+    print(str.encode(input))
 
 def checkHSV(capture):
     if GUI:
