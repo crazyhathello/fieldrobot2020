@@ -161,4 +161,4 @@ while STATE==0:
 if GUI:
     video.release()
     cv2.destroyAllWindows()
-runMotor(ser,4,0,0)
+runMotor(ser,4,000,000)
