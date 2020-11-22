@@ -26,8 +26,8 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     print("Through Serial Communication :")
     input=str(dir)+","+str(pwm1)+","+str(pwm2)
     print(input)
-    ser.write(str.encode('ascii',input))
-    print(str.encode('ascii',input))
+    ser.write(str.encode(input))
+    print(str.encode(input))
 
 def checkHSV(capture):
     if GUI:
@@ -46,6 +46,11 @@ if checkHSV(video):
     print("HSV ready")
 
 while STATE==0:
+    ser.flushInput()
+    ser_bytes = ser.readline()
+    decoded_bytes = float(ser_bytes[0:len(ser_bytes)-2].decode("utf-8"))
+    print('Decoded bytes: ',decoded_bytes)
+
     pwmL = pwmL_base
     pwmR = pwmR_base
     ret,frame = video.read()
