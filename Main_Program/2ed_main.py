@@ -10,7 +10,7 @@ pwmL = 0
 pwmR = 0
 x_delta = 0
 pwm_delta = 0
-
+HSV = True
 GUI = True
 
 def startSerialCom():
@@ -38,7 +38,7 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
     # print('arduino: ',arduino)
 
 def checkHSV(capture):
-    if GUI:
+    if HSV:
         ret,frame = capture.read()
         range_finder.find_range(frame)
     return True
@@ -151,8 +151,8 @@ while STATE==0:
         pwm_delta = x_delta/3.5
         pwm_delta = int(pwm_delta)
         if x_delta <0:
-            pwmL -= pwm_delta
-            pwmR += pwm_delta
+            pwmL -= int(1.5*pwm_delta)
+            pwmR += int(1.5*pwm_delta)
         else:
             pwmL -= pwm_delta
             pwmR += pwm_delta
