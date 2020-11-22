@@ -11,7 +11,7 @@ pwmR = 0
 x_delta = 0
 pwm_delta = 0
 
-GUI = False
+GUI = True
 
 def startSerialCom():
     ser = serial.Serial(
@@ -53,12 +53,12 @@ if video.isOpened() == False:
 if checkHSV(video):
     print("HSV ready")
 
-runMotor(ser,0,200,200)
-time.sleep(2)
-runMotor(ser,3,200,200)
-time.sleep(2)
-runMotor(ser,4,0,0)
-time.sleep(2)
+# runMotor(ser,0,200,200)
+# time.sleep(2)
+# runMotor(ser,3,200,200)
+# time.sleep(2)
+# runMotor(ser,4,0,0)
+# time.sleep(2)
 while STATE==0:
     pwmL = pwmL_base
     pwmR = pwmR_base
