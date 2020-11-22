@@ -53,12 +53,12 @@ if video.isOpened() == False:
 if checkHSV(video):
     print("HSV ready")
 
-# runMotor(ser,0,200,200)
-# time.sleep(2)
-# runMotor(ser,3,200,200)
-# time.sleep(2)
-# runMotor(ser,4,0,0)
-# time.sleep(2)
+runMotor(ser,0,200,200)
+time.sleep(2)
+runMotor(ser,3,200,200)
+time.sleep(2)
+runMotor(ser,4,0,0)
+time.sleep(2)
 while STATE==0:
     pwmL = pwmL_base
     pwmR = pwmR_base
@@ -148,7 +148,7 @@ while STATE==0:
                 cv2.line(frame,MID_LINE[0],MID_LINE[1],(0,0,255),2)
                 x_delta = MID_LINE[0][0]-MID_LINE[1][0]
         print(x_delta)
-        pwm_delta = x_delta/3
+        pwm_delta = x_delta/4
         pwm_delta = int(pwm_delta)
         if x_delta <0:
             pwmL -= pwm_delta
