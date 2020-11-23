@@ -28,4 +28,4 @@ def filter_green(frame):
     erosion = cv2.erode(close,erosion_kernel,iterations = 1)
     dilation = cv2.dilate(erosion,erosion_kernel,iterations = 1)
     
-    return dilation
+    return dilation, original

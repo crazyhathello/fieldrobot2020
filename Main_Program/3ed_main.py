@@ -73,8 +73,7 @@ try:
         ret,frame = video.read()
         if ret == True:
             print("into loop")
-            original = frame.copy()
-            close = image_processing.filter_green(frame)
+            close,original = image_processing.filter_green(frame)
 
             green_area = cv2.countNonZero(close)
             image_area = frame.shape[0]*frame.shape[1]
