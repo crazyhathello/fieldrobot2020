@@ -66,6 +66,7 @@ if checkHSV(video):
 # time.sleep(2)
 try:
     while STATE==0:
+        
         pwmL = pwmL_base
         pwmR = pwmR_base
         ret,frame = video.read()
@@ -106,6 +107,12 @@ try:
             if green_percent < 15:
                 runMotor(ser,4,0,0)
                 STATE = 1
+                # runMotor(ser,4,0,0)
+                # time.sleep(2)
+                # runMotor(ser,1,pwmL,pwmR)
+                # time.sleep(2)
+                # runMotor(4,0,0)
+                # time.sleep(2)
                 continue
             cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
             res = cv2.bitwise_and(original, original, mask=close)
