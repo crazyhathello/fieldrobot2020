@@ -70,6 +70,8 @@ void loop()
 void forward(int PWML, int PWMR) //dir = 0
 {
   analogWrite(IN1L, 0);
+  analogWrite(IN2L, 255);
+  analogWrite(IN1L, 0);
   analogWrite(IN2L, PWML);
   analogWrite(IN1R, 0);
   analogWrite(IN2R, PWMR);
