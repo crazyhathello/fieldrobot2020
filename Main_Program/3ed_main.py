@@ -9,11 +9,11 @@ pwmR_base = 145
 pwmL = 0
 pwmR = 0
 x_delta = 0
-X_MID = 630
+X_MID = 664
 pwm_delta = 0
 HSV = False
 GUI = True
-DEBUG = True
+DEBUG = False
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
@@ -86,7 +86,7 @@ try:
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
                     if green_percent < 35:
-                        runMotor(ser,4,0,0)
+                        #runMotor(ser,4,0,0)
                         STATE = 1
                         # runMotor(ser,4,0,0)
                         # time.sleep(2)
@@ -138,11 +138,11 @@ try:
             continue
         elif STATE == 1:
             right_counter += 1
-            time.sleep(2)
+            #time.sleep(2)
             runMotor(ser,1,pwmL_base,pwmR_base)
             time.sleep(2)
-            runMotor(ser,4,0,0)
-            time.sleep(1)
+            #runMotor(ser,4,0,0)
+            #time.sleep(1)
             if right_counter == 2:
                 STATE = 3
             else: 
