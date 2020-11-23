@@ -92,7 +92,7 @@ try:
             cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
             res = cv2.bitwise_and(original, original, mask=close)
 
-            x_delta = utilities.find_lane(close,X_MID)
+            frame, x_delta = utilities.find_lane(close,X_MID)
             print(x_delta)
             pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             pwm_delta = int(pwm_delta)
@@ -102,7 +102,7 @@ try:
             # else:
             #     pwmL -= pwm_delta
             #     pwmR += pwm_delta
-            if x_delta <0:
+            if x_delta < 0:
                 pwmL += pwm_delta
                 pwmR -= pwm_delta
             else:
