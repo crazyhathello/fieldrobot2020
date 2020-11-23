@@ -11,7 +11,7 @@ pwmR = 0
 x_delta = 0
 X_MID = 630
 pwm_delta = 0
-HSV = True
+HSV = False
 GUI = True
 
 def startSerialCom():
