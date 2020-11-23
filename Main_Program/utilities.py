@@ -99,6 +99,7 @@ def filter_green(frame):
     return dilation, original
 
 def find_lane(close,frame,X_MID):
+    x_delta = 0
     contours, hierarchy = cv2.findContours(close, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     if contours:    
         contours = sorted(contours,key=cv2.contourArea,reverse=True)[0]
