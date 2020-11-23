@@ -73,8 +73,9 @@ try:
         ret,frame = video.read()
         if ret == True:
             print("into loop")
-            close,original = image_processing.filter_green(frame)
-
+            close,frame = image_processing.filter_green(frame)
+            original = frame.copy()
+            
             green_area = cv2.countNonZero(close)
             image_area = frame.shape[0]*frame.shape[1]
             green_percent = (green_area/image_area)*100
