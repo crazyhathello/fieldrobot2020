@@ -2,7 +2,7 @@ import serial
 import cv2
 import numpy as np
 import range_finder
-import image_processing
+import utilities
 import time
 STATE = 0
 pwmL_base = 155
@@ -73,9 +73,9 @@ try:
         ret,frame = video.read()
         if ret == True:
             print("into loop")
-            close,frame = image_processing.filter_green(frame)
+            close,frame = utilities.filter_green(frame)
             original = frame.copy()
-            
+
             green_area = cv2.countNonZero(close)
             image_area = frame.shape[0]*frame.shape[1]
             green_percent = (green_area/image_area)*100
@@ -92,63 +92,7 @@ try:
             cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
             res = cv2.bitwise_and(original, original, mask=close)
 
-            contours, hierarchy = cv2.findContours(close, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-            if contours:    
-                contours = sorted(contours,key=cv2.contourArea,reverse=True)[0]
-                hull = cv2.convexHull(contours)
-                epsilon = 0.05*cv2.arcLength(hull,True)
-                approx = cv2.approxPolyDP(hull,epsilon,True)
-
-                pt_list = approx.tolist()
-                pt_list.append(pt_list[0])
-                slope_list = []
-                
-                for i in range(len(pt_list)-1):
-                    point1 = pt_list[i][0]
-                    point2 = pt_list[i+1][0]
-                    if (point1[0]-point2[0]) is not 0:
-                        slope = (point1[1]-point2[1])/(point1[0]-point2[0])
-                    else:
-                        slope = 0
-                    slope_list.append(slope)
-                print(slope_list)
-                
-                min = np.argmin(np.asarray(slope_list))
-                max = np.argmax(np.asarray(slope_list))
-                if min == 3:
-                    min = (3,0)
-                else:
-                    min = (min,min+1)
-                if max == 3:
-                    max = (3,0)
-                else:
-                    max = (max,max+1)
-                print(min,max)
-                
-                if len(approx) == 4:    
-                    cv2.line(frame,tuple(approx[min[0]][0]),tuple(approx[min[1]][0]),(0,0,255),2)
-                    cv2.line(frame,tuple(approx[max[0]][0]),tuple(approx[max[1]][0]),(0,0,255),2)
-                
-                    lineA = [approx[min[0]][0],approx[min[1]][0]]
-                    lineB = [approx[max[0]][0],approx[max[1]][0]]
-                    if lineA[1][1]>lineA[0][1]:
-                        temp = lineA[0]
-                        lineA[0] = lineA[1]
-                        lineA[1] = temp
-                    if lineB[1][1]>lineB[0][1]:
-                        temp = lineB[0]
-                        lineB[0] = lineB[1]
-                        lineB[1] = temp
-                    MID_LINE = [((lineA[0][0]+lineB[0][0])/2,(lineA[0][1]+lineB[0][1])/2),((lineA[1][0]+lineB[1][0])/2,(lineA[1][1]+lineB[1][1])/2)]
-                    MID_LINE = tuple(tuple(map(int, tup)) for tup in MID_LINE) 
-                    cv2.line(frame,MID_LINE[0],MID_LINE[1],(0,0,255),2)
-                    #x_delta = MID_LINE[0][0]-MID_LINE[1][0]
-                    x_delta = MID_LINE[0][0]- X_MID
-                    cv2.circle(frame,MID_LINE[0], 2, (0,255,0), -1)
-                    cv2.circle(frame,MID_LINE[1], 2, (0,255,0), -1)
-                    cv2.putText(frame,str(MID_LINE[0][0])+" , "+str(MID_LINE[0][1]),MID_LINE[0], cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
-                    cv2.putText(frame,str(MID_LINE[1][0])+" , "+str(MID_LINE[1][1]),tuple(np.add(MID_LINE[1],(0,50))), cv2.FONT_HERSHEY_SIMPLEX, 1, (200,255,155), 2, cv2.LINE_AA)
-                    
+            x_delta = utilities.find_lane(close,X_MID)
             print(x_delta)
             pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             pwm_delta = int(pwm_delta)
