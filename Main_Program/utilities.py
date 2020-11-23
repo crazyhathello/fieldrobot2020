@@ -97,7 +97,7 @@ def filter_green(frame):
     dilation = cv2.dilate(erosion,erosion_kernel,iterations = 1)
     
     mask = cv2.fillPoly(dilation, np.array([[(0,0),(0,400),(200,0)]],dtype=np.int32), 0)
-    mask = cv2.fillPoly(mask, np.array([[(1152,0),(952,0),(1152,0)]],dtype=np.int32),0)
+    mask = cv2.fillPoly(mask, np.array([[(1152,0),(952,0),(1152,600)]],dtype=np.int32),0)
 
     return mask, original
 
