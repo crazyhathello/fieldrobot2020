@@ -13,7 +13,7 @@ X_MID = 630
 pwm_delta = 0
 HSV = False
 GUI = True
-
+DEBUG = True
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
@@ -67,6 +67,8 @@ if checkHSV(video):
 
 # STATES: 0(line follow), 1(right turn), 2(left turn),3(special),4(finished)
 try:
+    if DEBUG:
+        STATE = 5
     right_counter = 0
     while True:
         if STATE == 0:
@@ -154,6 +156,9 @@ try:
             time.sleep(1)
             STATE = 0
             continue  
+        elif STATE ==5:
+            runMotor(ser,0,pwmL_base,pwmR_base)
+            time.sleep(2)
 except KeyboardInterrupt:
     pass
 
