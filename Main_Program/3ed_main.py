@@ -9,6 +9,7 @@ pwmR_base = 145
 pwmL = 0
 pwmR = 0
 x_delta = 0
+X_MID = 630
 pwm_delta = 0
 HSV = False
 GUI = True
@@ -159,7 +160,8 @@ try:
                     MID_LINE = [((lineA[0][0]+lineB[0][0])/2,(lineA[0][1]+lineB[0][1])/2),((lineA[1][0]+lineB[1][0])/2,(lineA[1][1]+lineB[1][1])/2)]
                     MID_LINE = tuple(tuple(map(int, tup)) for tup in MID_LINE) 
                     cv2.line(frame,MID_LINE[0],MID_LINE[1],(0,0,255),2)
-                    x_delta = MID_LINE[0][0]-MID_LINE[1][0]
+                    #x_delta = MID_LINE[0][0]-MID_LINE[1][0]
+                    x_delta = MID_LINE[0][0]- X_MID
                     cv2.circle(frame,MID_LINE[0], 2, (0,255,0), -1)
                     cv2.circle(frame,MID_LINE[1], 2, (0,255,0), -1)
                     cv2.putText(frame,str(MID_LINE[0][0])+" , "+str(MID_LINE[0][1]),MID_LINE[0], cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
@@ -168,12 +170,18 @@ try:
             print(x_delta)
             pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             pwm_delta = int(pwm_delta)
+            # if x_delta <0:
+            #     pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
+            #     pwmR += int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
+            # else:
+            #     pwmL -= pwm_delta
+            #     pwmR += pwm_delta
             if x_delta <0:
-                pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
-                pwmR += int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
+                pwmL += pwm_delta
+                pwmR -= pwm_delta
             else:
-                pwmL -= pwm_delta
-                pwmR += pwm_delta
+                pwmL += pwm_delta
+                pwmR -= pwm_delta
             # pwm gate
             if pwmL > 250:
                 pwmL = 250
