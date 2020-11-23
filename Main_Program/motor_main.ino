@@ -80,6 +80,10 @@ void forward(int PWML, int PWMR) //dir = 0
 
 void right(int PWML, int PWMR) //dir = 1; right wheel backward, left forward;
 {
+    
+  analogWrite(IN1L, 0);
+  analogWrite(IN2L, 255);
+  delay(50);
   analogWrite(IN1L, 0);
   analogWrite(IN2L, PWML);
   analogWrite(IN1R, PWMR);
