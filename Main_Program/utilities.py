@@ -99,7 +99,7 @@ def filter_green(frame):
     mask = cv2.fillPoly(dilation, np.array([[(0,0),(0,400),(200,0)]],dtype=np.int32), 0)
     mask = cv2.fillPoly(mask, np.array([[(1152,0),(952,0),(1152,0)]],dtype=np.int32),0)
 
-    return dilation, original
+    return mask, original
 
 def find_lane(close,frame,X_MID):
     x_delta = 0
