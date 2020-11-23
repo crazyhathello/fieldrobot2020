@@ -99,6 +99,14 @@ try:
             
             close = dilation
 
+            green_area = cv2.countNonZero(close)
+            image_area = frame.shape[0]*frame.shape[1]
+            green_percent = (green_area/image_area)*100
+            # if green_percent < 10:
+            #     runMotor(ser,4,0,0)
+            #     STATE = 1
+            #     continue
+            cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
             res = cv2.bitwise_and(original, original, mask=close)
 
             contours, hierarchy = cv2.findContours(close, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -161,8 +169,8 @@ try:
             pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             pwm_delta = int(pwm_delta)
             if x_delta <0:
-                pwmL -= int(1.5*pwm_delta)
-                pwmR += int(1.5*pwm_delta)
+                pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
+                pwmR += int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
             else:
                 pwmL -= pwm_delta
                 pwmR += pwm_delta
@@ -191,6 +199,6 @@ except KeyboardInterrupt:
 if GUI:
     video.release()
     cv2.destroyAllWindows()
-runMotor(ser,4,000,000)
+runMotor(ser,4,0,0)
 time.sleep(2)
 ser.close()
