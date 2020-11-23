@@ -78,8 +78,8 @@ def filter_green(frame):
 
     original = frame.copy()
 
-    image = cv2.fillPoly(frame, [[(0,0),(0,400),(200,0)]], (255,255,255))
-    image = cv2.fillPoly(frame, [[(1152,0),(952,0),(1152,0)]],(255,255,255))
+    image = cv2.fillPoly(frame, [[(0,0),(0,400),(200,0)]], (255,255,255),dtype=np.int32)
+    image = cv2.fillPoly(frame, [[(1152,0),(952,0),(1152,0)]],(255,255,255),dtype=np.int32)
 
     # Convert Color range BGR --> RGB --> HSV
     path = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
