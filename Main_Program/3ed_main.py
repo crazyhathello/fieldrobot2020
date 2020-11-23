@@ -78,7 +78,7 @@ try:
             green_area = cv2.countNonZero(close)
             image_area = frame.shape[0]*frame.shape[1]
             green_percent = (green_area/image_area)*100
-            if green_percent < 15:
+            if green_percent < 18:
                 runMotor(ser,4,0,0)
                 STATE = 1
                 # runMotor(ser,4,0,0)
@@ -93,7 +93,7 @@ try:
 
             frame, x_delta = utilities.find_lane(close,frame,X_MID)
             print(x_delta)
-            pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            pwm_delta = x_delta/2 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             pwm_delta = int(pwm_delta)
             # if x_delta <0:
             #     pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
