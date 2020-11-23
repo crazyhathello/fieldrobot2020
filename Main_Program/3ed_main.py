@@ -1,7 +1,6 @@
 import serial
 import cv2
 import numpy as np
-import range_finder
 import utilities
 import time
 STATE = 0
@@ -12,7 +11,7 @@ pwmR = 0
 x_delta = 0
 X_MID = 630
 pwm_delta = 0
-HSV = False
+HSV = True
 GUI = True
 
 def startSerialCom():
@@ -46,7 +45,7 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
 def checkHSV(capture):
     if HSV:
         ret,frame = capture.read()
-        range_finder.find_range(frame)
+        utilities.find_range(frame)
     return True
 
 ser = startSerialCom()
