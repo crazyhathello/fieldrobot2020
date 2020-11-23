@@ -11,7 +11,7 @@ pwmR = 0
 x_delta = 0
 pwm_delta = 0
 HSV = False
-GUI = False
+GUI = True
 
 def startSerialCom():
     ser = serial.Serial(
@@ -155,7 +155,7 @@ try:
                     cv2.circle(frame,MID_LINE[0], 2, (0,255,0), -1)
                     cv2.circle(frame,MID_LINE[1], 2, (0,255,0), -1)
                     cv2.putText(frame,str(MID_LINE[0][0])+" , "+str(MID_LINE[0][1]),MID_LINE[0], cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
-                    cv2.putText(frame,str(MID_LINE[1][0])+" , "+str(MID_LINE[1][1]),MID_LINE[1], cv2.FONT_HERSHEY_SIMPLEX, 1, (200,255,155), 2, cv2.LINE_AA)
+                    cv2.putText(frame,str(MID_LINE[1][0])+" , "+str(MID_LINE[1][1]),tuple(np.add(MID_LINE[1],(0,50))), cv2.FONT_HERSHEY_SIMPLEX, 1, (200,255,155), 2, cv2.LINE_AA)
                     
             print(x_delta)
             pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

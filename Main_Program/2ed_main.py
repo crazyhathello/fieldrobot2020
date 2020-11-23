@@ -11,7 +11,7 @@ pwmR = 0
 x_delta = 0
 pwm_delta = 0
 HSV = False
-GUI = False
+GUI = True
 
 def startSerialCom():
     ser = serial.Serial(
