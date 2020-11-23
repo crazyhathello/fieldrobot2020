@@ -97,6 +97,9 @@ void right(int PWML, int PWMR) //dir = 1; right wheel backward, left forward;
 
 void left(int PWML, int PWMR) //dir = 2; left wheel backward, right forward;
 {
+  analogWrite(IN1L, 255);
+  analogWrite(IN2L, 0);
+  delay(50);
   analogWrite(IN1L, PWML);
   analogWrite(IN2L, 0);
   analogWrite(IN1R, 0);

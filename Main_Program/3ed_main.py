@@ -4,8 +4,8 @@ import numpy as np
 import utilities
 import time
 STATE = 0
-pwmL_base = 155
-pwmR_base = 145
+pwmL_base = 205
+pwmR_base = 205
 pwmL = 0
 pwmR = 0
 x_delta = 0
@@ -85,8 +85,8 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if green_percent < 35:
-                        #runMotor(ser,4,0,0)
+                    if green_percent < 38:
+                        runMotor(ser,4,0,0)
                         STATE = 1
                         # runMotor(ser,4,0,0)
                         # time.sleep(2)
@@ -112,8 +112,8 @@ try:
                         pwmL += pwm_delta
                         pwmR -= pwm_delta
                     else:
-                        pwmL += pwm_delta
-                        pwmR -= pwm_delta
+                        pwmL += int(1.2*pwm_delta)
+                        pwmR -= int(1.2*pwm_delta)
                     # pwm gate
                     if pwmL > 250:
                         pwmL = 250
@@ -138,7 +138,7 @@ try:
             continue
         elif STATE == 1:
             right_counter += 1
-            #time.sleep(2)
+            time.sleep(2)
             runMotor(ser,1,pwmL_base,pwmR_base)
             time.sleep(2)
             #runMotor(ser,4,0,0)
