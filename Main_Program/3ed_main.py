@@ -103,7 +103,7 @@ try:
             green_area = cv2.countNonZero(close)
             image_area = frame.shape[0]*frame.shape[1]
             green_percent = (green_area/image_area)*100
-            if green_percent < 12:
+            if green_percent < 15:
                 runMotor(ser,4,0,0)
                 STATE = 1
                 continue
