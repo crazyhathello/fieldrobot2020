@@ -78,9 +78,6 @@ def filter_green(frame):
 
     original = frame.copy()
 
-    frame = cv2.fillPoly(frame, np.array([[(0,0),(0,400),(200,0)]],dtype=np.int32), (255,255,255))
-    frame = cv2.fillPoly(frame, np.array([[(1152,0),(952,0),(1152,0)]],dtype=np.int32),(255,255,255))
-
     # Convert Color range BGR --> RGB --> HSV
     path = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
     path = cv2.cvtColor(path, cv2.COLOR_RGB2HSV)
@@ -91,7 +88,7 @@ def filter_green(frame):
     upper_green = np.array([60, 255, 255])
     
     mask = cv2.inRange(path, lower_green, upper_green)
-    
+
     # Morphological Closing
     close_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
     erosion_kernel = np.ones((5,5),np.uint8)
@@ -99,6 +96,9 @@ def filter_green(frame):
     erosion = cv2.erode(close,erosion_kernel,iterations = 1)
     dilation = cv2.dilate(erosion,erosion_kernel,iterations = 1)
     
+    mask = cv2.fillPoly(dilation, np.array([[(0,0),(0,400),(200,0)]],dtype=np.int32), 0)
+    mask = cv2.fillPoly(mask, np.array([[(1152,0),(952,0),(1152,0)]],dtype=np.int32),0)
+
     return dilation, original
 
 def find_lane(close,frame,X_MID):
