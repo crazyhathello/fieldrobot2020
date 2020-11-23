@@ -4,14 +4,14 @@ import numpy as np
 import range_finder
 import time
 STATE = 0
-pwmL_base = 205
-pwmR_base = 195
+pwmL_base = 155
+pwmR_base = 145
 pwmL = 0
 pwmR = 0
 x_delta = 0
 pwm_delta = 0
 HSV = False
-GUI = True
+GUI = False
 
 def startSerialCom():
     ser = serial.Serial(
@@ -26,9 +26,26 @@ def startSerialCom():
 
 def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backward)
     print("Through Serial Communication :")
-    input=str(dir)+","+str(pwm1)+","+str(pwm2)
+    pwm1 = str(pwm1)
+    pwm2 = str(pwm2)
+    if len(pwm1) == 2:
+        pwm1 = "0" + pwm1
+    if len(pwm2) == 2:
+        pwm2 = "0" + pwm2
+    if len(pwm1) == 1:
+        pwm1 = "00" + pwm1
+    if len(pwm2) == 1:
+        pwm2 = "00" + pwm2
+
+    input=str(dir)+","+pwm1+","+pwm2
     print(input)
+    # ser.flushInput()
     ser.write(str.encode(input))
+    # time.sleep(0.05)
+    # ser_bytes = ser.readline()
+    # arduino = ser_bytes.decode()
+    # print(str.encode(input))
+    # print('arduino: ',arduino)
 
 def checkHSV(capture):
     if HSV:
@@ -37,6 +54,8 @@ def checkHSV(capture):
     return True
 
 ser = startSerialCom()
+#video = cv2.VideoCapture("camera_test_code\\test_video.mp4")
+
 video = cv2.VideoCapture(0)
 if video.isOpened() == False:
     print("Error opening video stream or file")
@@ -44,12 +63,12 @@ if checkHSV(video):
     print("HSV ready")
 
 runMotor(ser,0,200,200)
-time.sleep(10)
-runMotor(ser,4,0,0)
-time.sleep(0.5)
+time.sleep(2)
+runMotor(ser,4,000,000)
+time.sleep(2)
 runMotor(ser,3,200,200)
 time.sleep(2)
-runMotor(ser,4,0,0)
+runMotor(ser,4,000,000)
 time.sleep(2)
 while STATE==0:
     pwmL = pwmL_base
@@ -65,6 +84,7 @@ while STATE==0:
         frame = cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
 
         original = frame.copy()
+
         # Convert Color range BGR --> RGB --> HSV
         path = cv2.cvtColor(original, cv2.COLOR_BGR2RGB)
         path = cv2.cvtColor(path, cv2.COLOR_RGB2HSV)
@@ -86,15 +106,6 @@ while STATE==0:
         close = dilation
 
         res = cv2.bitwise_and(original, original, mask=close)
-
-        # Check area percentage for turning
-        green_area = cv2.countNonZero(close)
-        image_area = frame.shape[0]*frame.shape[1]
-        green_percent = (green_area/image_area)*100
-        if green_percent < 10:
-            runMotor(ser,4,000,000)
-            STATE = 1
-            continue
 
         contours, hierarchy = cv2.findContours(close, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         if contours:    
@@ -147,8 +158,6 @@ while STATE==0:
                 MID_LINE = tuple(tuple(map(int, tup)) for tup in MID_LINE) 
                 cv2.line(frame,MID_LINE[0],MID_LINE[1],(0,0,255),2)
                 x_delta = MID_LINE[0][0]-MID_LINE[1][0]
-        
-        # Delta modification and tuning
         print(x_delta)
         pwm_delta = x_delta/3.5
         pwm_delta = int(pwm_delta)
@@ -172,8 +181,7 @@ while STATE==0:
             cv2.imshow("mask", close)
             if cv2.waitKey(25) & 0xFF == ord("q"):
                 break
-        print("====================")
-        time.sleep(0.05)
+        time.sleep(0.01)
     else:
         break
 
@@ -181,7 +189,7 @@ while STATE==0:
 if GUI:
     video.release()
     cv2.destroyAllWindows()
-
 runMotor(ser,4,000,000)
 time.sleep(2)
+#runMotor(ser,3,200,200)
 ser.close()
