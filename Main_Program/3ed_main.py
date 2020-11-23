@@ -64,74 +64,98 @@ if checkHSV(video):
 # time.sleep(2)
 # runMotor(ser,4,000,000)
 # time.sleep(2)
+
+# STATES: 0(line follow), 1(right turn), 2(left turn),3(special),4(finished)
 try:
-    while STATE==0:
-        
-        pwmL = pwmL_base
-        pwmR = pwmR_base
-        ret,frame = video.read()
-        if ret == True:
-            print("into loop")
-            close,frame = utilities.filter_green(frame)
-            original = frame.copy()
+    right_counter = 0
+    while True:
+        if STATE == 0:
+            while STATE==0:
 
-            green_area = cv2.countNonZero(close)
-            image_area = frame.shape[0]*frame.shape[1]
-            green_percent = (green_area/image_area)*100
-            if green_percent < 35:
-                runMotor(ser,4,0,0)
-                STATE = 1
-                # runMotor(ser,4,0,0)
-                # time.sleep(2)
-                # runMotor(ser,1,pwmL,pwmR)
-                # time.sleep(2)
-                # runMotor(4,0,0)
-                # time.sleep(2)
-                continue
-            cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
-            res = cv2.bitwise_and(original, original, mask=close)
+                pwmL = pwmL_base
+                pwmR = pwmR_base
+                ret,frame = video.read()
+                if ret == True:
+                    print("into loop")
+                    close,frame = utilities.filter_green(frame)
+                    original = frame.copy()
 
-            frame, x_delta = utilities.find_lane(close,frame,X_MID)
-            print(x_delta)
-            pwm_delta = x_delta/2 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            pwm_delta = int(pwm_delta)
-            # if x_delta <0:
-            #     pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
-            #     pwmR += int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
-            # else:
-            #     pwmL -= pwm_delta
-            #     pwmR += pwm_delta
-            if x_delta < 0:
-                pwmL += pwm_delta
-                pwmR -= pwm_delta
-            else:
-                pwmL += pwm_delta
-                pwmR -= pwm_delta
-            # pwm gate
-            if pwmL > 250:
-                pwmL = 250
-            if pwmR > 250:
-                pwmR = 250
-            if pwmL < 0:
-                pwmL = 0
-            if pwmR < 0:
-                pwmR = 0
+                    green_area = cv2.countNonZero(close)
+                    image_area = frame.shape[0]*frame.shape[1]
+                    green_percent = (green_area/image_area)*100
+                    if green_percent < 35:
+                        runMotor(ser,4,0,0)
+                        STATE = 1
+                        # runMotor(ser,4,0,0)
+                        # time.sleep(2)
+                        # runMotor(ser,1,pwmL,pwmR)
+                        # time.sleep(2)
+                        # runMotor(4,0,0)
+                        # time.sleep(2)
+                        continue
+                    cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
+                    res = cv2.bitwise_and(original, original, mask=close)
 
-            runMotor(ser,0,pwmL,pwmR)
-            
-            if GUI:    
-                output = cv2.hconcat([frame, res])
-                cv2.imshow("Output", output)
-                cv2.imshow("mask", close)
-                if cv2.waitKey(25) & 0xFF == ord("q"):
+                    frame, x_delta = utilities.find_lane(close,frame,X_MID)
+                    print(x_delta)
+                    pwm_delta = x_delta/2 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    pwm_delta = int(pwm_delta)
+                    # if x_delta <0:
+                    #     pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
+                    #     pwmR += int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
+                    # else:
+                    #     pwmL -= pwm_delta
+                    #     pwmR += pwm_delta
+                    if x_delta < 0:
+                        pwmL += pwm_delta
+                        pwmR -= pwm_delta
+                    else:
+                        pwmL += pwm_delta
+                        pwmR -= pwm_delta
+                    # pwm gate
+                    if pwmL > 250:
+                        pwmL = 250
+                    if pwmR > 250:
+                        pwmR = 250
+                    if pwmL < 0:
+                        pwmL = 0
+                    if pwmR < 0:
+                        pwmR = 0
+
+                    runMotor(ser,0,pwmL,pwmR)
+                    
+                    if GUI:    
+                        output = cv2.hconcat([frame, res])
+                        cv2.imshow("Output", output)
+                        cv2.imshow("mask", close)
+                        if cv2.waitKey(25) & 0xFF == ord("q"):
+                            break
+                    time.sleep(0.01)
+                else:
                     break
-            time.sleep(0.01)
-        else:
-            break
+            continue
+        elif STATE == 1:
+            right_counter += 1
+            time.sleep(2)
+            runMotor(ser,1,pwmL_base,pwmR_base)
+            time.sleep(2)
+            runMotor(ser,4,0,0)
+            time.sleep(1)
+            if right_counter == 2:
+                STATE = 3
+            else: 
+                STATE = 0
+            continue
+        elif STATE == 2:
+            time.sleep(2)
+            runMotor(ser,2,pwmL_base,pwmR_base)
+            time.sleep(2)
+            runMotor(ser,4,0,0)
+            time.sleep(1)
+            STATE = 0
+            continue  
 except KeyboardInterrupt:
     pass
-
-
 
 if GUI:
     video.release()
