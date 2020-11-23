@@ -180,9 +180,6 @@ try:
                 cv2.imshow("mask", close)
                 if cv2.waitKey(25) & 0xFF == ord("q"):
                     break
-            else:
-                output = np.zeros(frame.shape())
-                cv2.imshow(("Output"),output)
             time.sleep(0.01)
         else:
             break
