@@ -112,6 +112,10 @@ try:
                 pwmL = 250
             if pwmR > 250:
                 pwmR = 250
+            if pwmL < 0:
+                pwmL = 0
+            if pwmR < 0:
+                pwmR = 0
 
             runMotor(ser,0,pwmL,pwmR)
             
