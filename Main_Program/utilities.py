@@ -155,9 +155,10 @@ def find_lane(close,frame,X_MID):
             cv2.line(frame,MID_LINE[0],MID_LINE[1],(0,0,255),2)
             #x_delta = MID_LINE[0][0]-MID_LINE[1][0]
             x_delta = MID_LINE[0][0]- X_MID
+            slope_delta = MID_LINE[1][0] - MID_LINE[0][0]
             cv2.circle(frame,MID_LINE[0], 2, (0,255,0), -1)
             cv2.circle(frame,MID_LINE[1], 2, (0,255,0), -1)
             cv2.putText(frame,str(MID_LINE[0][0])+" , "+str(MID_LINE[0][1]),MID_LINE[0], cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
             cv2.putText(frame,str(MID_LINE[1][0])+" , "+str(MID_LINE[1][1]),tuple(np.add(MID_LINE[1],(0,50))), cv2.FONT_HERSHEY_SIMPLEX, 1, (200,255,155), 2, cv2.LINE_AA)
     
-    return frame, x_delta 
+    return frame, x_delta ,slope_delta

@@ -73,12 +73,11 @@ try:
             STATE = 5
         if STATE == 0:
             while STATE==0:
-
                 pwmL = pwmL_base
                 pwmR = pwmR_base
                 ret,frame = video.read()
                 if ret == True:
-                    print("into loop")
+                    print("Line tracking")
                     close,frame = utilities.filter_green(frame)
                     original = frame.copy()
 
@@ -97,9 +96,12 @@ try:
                     cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     res = cv2.bitwise_and(original, original, mask=close)
 
-                    frame, x_delta = utilities.find_lane(close,frame,X_MID)
-                    print(x_delta)
-                    pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    frame, x_delta ,slope_delta= utilities.find_lane(close,frame,X_MID)
+                    print("x_delta: ",x_delta)
+                    print("slope_delta: ", slope_delta)
+                    #pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    print("pwm_delta: ",pwm_delta)
+                    pwm_delta = (x_delta+slope_delta)/5
                     pwm_delta = int(pwm_delta)
                     # if x_delta <0:
                     #     pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
