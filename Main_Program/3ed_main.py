@@ -10,6 +10,7 @@ pwmR = 0
 x_delta = 0
 X_MID = 670
 pwm_delta = 0
+slope_delta = 0
 HSV = False
 GUI = True
 DEBUG = False
@@ -95,7 +96,7 @@ try:
                         continue
                     cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     res = cv2.bitwise_and(original, original, mask=close)
-
+                    
                     frame, x_delta ,slope_delta= utilities.find_lane(close,frame,X_MID)
                     print("x_delta: ",x_delta)
                     print("slope_delta: ", slope_delta)
