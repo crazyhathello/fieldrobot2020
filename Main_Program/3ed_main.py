@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 import utilities
 import time
-STATE = 0
 pwmL_base = 205
 pwmR_base = 195
 pwmL = 0
@@ -14,6 +13,8 @@ pwm_delta = 0
 HSV = False
 GUI = True
 DEBUG = False
+STATE_MAP = [3,0,1,0,1,4,2,0,2,0]
+
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
@@ -65,12 +66,11 @@ if checkHSV(video):
 # runMotor(ser,4,000,000)
 # time.sleep(2)
 
-# STATES: 0(line follow), 1(right turn), 2(left turn),3(special),4(finished)
+# STATES: 0(line follow), 1(right turn), 2(left turn),3(rock),4(watering),5(special)
 try:
-    if DEBUG:
-        STATE = 5
-    right_counter = 0
-    while True:
+    for STATE in STATE_MAP:
+        if DEBUG:
+            STATE = 5
         if STATE == 0:
             while STATE==0:
 
@@ -86,7 +86,6 @@ try:
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
                     if green_percent < 38:
-                        #runMotor(ser,4,0,0)
                         STATE = 1
                         # runMotor(ser,4,0,0)
                         # time.sleep(2)
@@ -100,7 +99,7 @@ try:
 
                     frame, x_delta = utilities.find_lane(close,frame,X_MID)
                     print(x_delta)
-                    pwm_delta = x_delta/2 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                     pwm_delta = int(pwm_delta)
                     # if x_delta <0:
                     #     pwmL -= int(1.5*pwm_delta) #%%%%%%%%%%%%%%%%%%%%%%%%
@@ -136,27 +135,44 @@ try:
                 else:
                     break
             continue
+
         elif STATE == 1:
-            right_counter += 1
             #time.sleep(2)
             runMotor(ser,1,pwmL_base,pwmR_base)
-            time.sleep(1.8)
-            #runMotor(ser,4,0,0)
-            #time.sleep(1)
-            if right_counter == 2:
-                STATE = 3
-            else: 
-                STATE = 0
+            time.sleep(1.7)
+            runMotor(ser,4,0,0)
+            time.sleep(1)
             continue
+
         elif STATE == 2:
             #time.sleep(2)
             runMotor(ser,2,pwmL_base,pwmR_base)
-            time.sleep(1.8)
-            #runMotor(ser,4,0,0)
-            #time.sleep(1)
-            STATE = 0
+            time.sleep(1.7)
+            runMotor(ser,4,0,0)
+            time.sleep(1)
+            continue
+
+        elif STATE == 3: # rock
+            while True:
+                pwmL = pwmL_base
+                pwmR = pwmR_base
+                ret,frame = video.read()
+                if ret == True:
+                    print("Rock_phase")
+                    close,frame = utilities.filter_green(frame)
+                    original = frame.copy()
+                    green_area = cv2.countNonZero(close)
+                    image_area = frame.shape[0]*frame.shape[1]
+                    green_percent = (green_area/image_area)*100
+                    if green_percent > 10:
+                        break
+                    runMotor(ser,0,pwmL,pwmR)
+                #cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
+            continue
+
+        elif STATE == 4:#watering
             continue  
-        elif STATE ==5:
+        elif STATE ==5: 
             runMotor(ser,0,pwmL_base,pwmR_base)
             time.sleep(2)
 except KeyboardInterrupt:
