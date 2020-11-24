@@ -5,11 +5,11 @@ import utilities
 import time
 STATE = 0
 pwmL_base = 205
-pwmR_base = 205
+pwmR_base = 195
 pwmL = 0
 pwmR = 0
 x_delta = 0
-X_MID = 664
+X_MID = 670
 pwm_delta = 0
 HSV = False
 GUI = True
@@ -86,7 +86,7 @@ try:
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
                     if green_percent < 38:
-                        runMotor(ser,4,0,0)
+                        #runMotor(ser,4,0,0)
                         STATE = 1
                         # runMotor(ser,4,0,0)
                         # time.sleep(2)
@@ -113,7 +113,7 @@ try:
                         pwmR -= pwm_delta
                     else:
                         pwmL += int(1.2*pwm_delta)
-                        pwmR -= int(1.2*pwm_delta)
+                        pwmR -= pwm_delta
                     # pwm gate
                     if pwmL > 250:
                         pwmL = 250
@@ -138,9 +138,9 @@ try:
             continue
         elif STATE == 1:
             right_counter += 1
-            time.sleep(2)
+            #time.sleep(2)
             runMotor(ser,1,pwmL_base,pwmR_base)
-            time.sleep(2)
+            time.sleep(1.8)
             #runMotor(ser,4,0,0)
             #time.sleep(1)
             if right_counter == 2:
@@ -149,11 +149,11 @@ try:
                 STATE = 0
             continue
         elif STATE == 2:
-            time.sleep(2)
+            #time.sleep(2)
             runMotor(ser,2,pwmL_base,pwmR_base)
-            time.sleep(2)
-            runMotor(ser,4,0,0)
-            time.sleep(1)
+            time.sleep(1.8)
+            #runMotor(ser,4,0,0)
+            #time.sleep(1)
             STATE = 0
             continue  
         elif STATE ==5:
