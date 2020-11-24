@@ -164,7 +164,7 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if green_percent > 10:
+                    if green_percent > 50:
                         break
                     runMotor(ser,0,pwmL,pwmR)
                 #cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
