@@ -68,7 +68,7 @@ def find_range(img):
             break
 
     cv2.destroyAllWindows()
-def filter_green(frame):
+def filter_color(frame,color):
     # Image scaling
     scale_percent = 60  # percent of original size
     width = int(frame.shape[1] * scale_percent / 100)
@@ -84,10 +84,14 @@ def filter_green(frame):
 
     # Color filtering
     # HSV ranges (0,76,0) to (20,255,255) (use range_finder.py)
-    lower_green = np.array([27, 84, 25])
-    upper_green = np.array([46, 255, 255])
-    
-    mask = cv2.inRange(path, lower_green, upper_green)
+    if color == "green":
+        lower = np.array([27, 84, 25])
+        upper = np.array([46, 255, 255])
+    elif color == "white":
+        lower = np.array([0,0,0])
+        upper = np.array([0,0,0])
+
+    mask = cv2.inRange(path, lower, upper)
 
     # Morphological Closing
     close_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
