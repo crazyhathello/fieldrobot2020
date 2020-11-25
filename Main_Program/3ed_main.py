@@ -14,7 +14,7 @@ HSV = False
 GUI = True
 DEBUG = True
 #STATE_MAP = [3,1,0,1,0,2,0,2,0]
-STATE_MAP = [0,2,0,2,0]
+STATE_MAP = [4,2,0,2,0]
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
@@ -209,6 +209,18 @@ try:
             continue
 
         elif STATE == 4:#watering
+            runMotor(ser,0,255,195)
+            time.sleep(2)
+            runMotor(ser,4,0,0)
+            time.sleep(2)
+            runMotor(ser,0,255,195)
+            time.sleep(2)
+            runMotor(ser,4,0,0)
+            time.sleep(2)
+            runMotor(ser,0,255,195)
+            time.sleep(2)
+            runMotor(ser,4,0,0)
+            time.sleep(2)
             continue  
         elif STATE == 5: 
             print("debug mode")
