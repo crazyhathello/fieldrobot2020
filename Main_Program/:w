@@ -162,11 +162,11 @@ try:
             runMotor(ser,0,pwmL_base,pwmR_base)
             time.sleep(4.5)
             runMotor(ser,1,pwmL_base,pwmR_base)
-            time.sleep(1.9)
+            time.sleep(2.5)
             runMotor(ser,0,pwmL_base,pwmR_base)
-            time.sleep(7.5)
+            time.sleep(7)
             runMotor(ser,1,pwmL_base,pwmR_base)
-            time.sleep(2.0)
+            time.sleep(2.5)
 
             #runMotor(ser,4,0,0)
             #time.sleep(1)
@@ -181,11 +181,11 @@ try:
             continue
 
         elif STATE == 3: # rock
-            #runMotor(ser,0,255,190)
+            #runMotor(ser,0,250,220)
             #time.sleep(20)
             while True:
                 pwmL = 255
-                pwmR = 190
+                pwmR = 195
                 ret,frame = video.read()
                 if ret == True:
                     
