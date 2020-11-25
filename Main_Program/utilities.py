@@ -88,18 +88,19 @@ def filter_color(frame,color):
         lower = np.array([27, 84, 25])
         upper = np.array([46, 255, 255])
     elif color == "white":
-        lower = np.array([0,0,0])
-        upper = np.array([0,0,0])
+        lower = np.array([0,0,230])
+        upper = np.array([179,30,255])
 
     mask = cv2.inRange(path, lower, upper)
 
-    # Morphological Closing
-    close_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
-    erosion_kernel = np.ones((5,5),np.uint8)
-    close = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, close_kernel, iterations=1)
-    erosion = cv2.erode(close,erosion_kernel,iterations = 1)
-    dilation = cv2.dilate(erosion,erosion_kernel,iterations = 1)
-    
+    if color == "green":
+        # Morphological Closing
+        close_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
+        erosion_kernel = np.ones((5,5),np.uint8)
+        close = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, close_kernel, iterations=1)
+        erosion = cv2.erode(close,erosion_kernel,iterations = 1)
+        dilation = cv2.dilate(erosion,erosion_kernel,iterations = 1)
+        mask = dilation
     #mask = cv2.fillPoly(dilation, np.array([[(0,0),(0,600),(200,0)]],dtype=np.int32), 0)
     #mask = cv2.fillPoly(mask, np.array([[(1152,0),(952,0),(1152,600)]],dtype=np.int32),0)
 

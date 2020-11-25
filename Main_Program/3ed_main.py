@@ -10,10 +10,10 @@ pwmR = 0
 x_delta = 0
 X_MID = 690
 pwm_delta = 0
-HSV = True
+HSV = False
 GUI = True
 DEBUG = False
-STATE_MAP = [0,0,1,0,1,0,2,0,2,0]
+STATE_MAP = [3,0,1,0,1,0,2,0,2,0]
 
 def startSerialCom():
     ser = serial.Serial(
@@ -90,12 +90,13 @@ try:
             while STATE==0:
                 pwmL = pwmL_base
                 pwmR = pwmR_base
-                ret,frame = video.read()
+                ret,frame_original = video.read()
                 if ret == True:
                     print("Line tracking")
-                    close,frame = utilities.filter_color(frame,"green")
-                    white_mask, white_frame = utilities.filter_color(frame,"white")
-                    original = frame.copy()
+                    close,frame = utilities.filter_color(frame_original,"green")
+                    white_mask, white_frame = utilities.filter_color(frame_original,"white")
+                    original1 = frame.copy()
+                    original2 = white_frame.copy()
 
                     white_area = cv2.countNonZero(white_mask)
                     image_area = frame.shape[0]*frame.shape[1]
@@ -104,12 +105,16 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if white_percent > 10:
+                    if white_percent > 3.2:
                         break
                     cv2.putText(frame,"White percent " + str(white_percent),(50,400),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
-                    res = cv2.bitwise_and(original, original, mask=close)
-                    
+                    res = cv2.bitwise_and(original1, original1, mask=close)
+                    white_res = cv2.bitwise_and(original2,original2,mask=white_mask)
+
+                    mask = cv2.fillPoly(white_res, np.array([[(0,0),(0,647),(250,647),(250,0)]],dtype=np.int32), 0)
+                    mask = cv2.fillPoly(mask, np.array([[(902,0),(902,647),(1152,647),(1152,0)]],dtype=np.int32), 0)
+
                     frame, x_delta = utilities.find_lane(close,frame,X_MID)
                     print("x_delta: ",x_delta)
                     pwm_delta = x_delta/2.5 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,12 +144,14 @@ try:
 
                     runMotor(ser,0,pwmL,pwmR)
                     
-                    if GUI:    
+                    if GUI:
                         output = cv2.hconcat([frame, res])
                         cv2.imshow("Output", output)
                         cv2.imshow("mask", close)
-                        if cv2.waitKey(25) & 0xFF == ord("q"):
-                            break
+                        cv2.imshow("white",mask)
+                        
+                    if cv2.waitKey(25) & 0xFF == ord("q"):
+                        break
                     time.sleep(0.01)
                 else:
                     break
@@ -167,15 +174,15 @@ try:
             continue
 
         elif STATE == 3: # rock
-            runMotor(ser,0,250,220)
-            time.sleep(20)
+            #runMotor(ser,0,250,220)
+            #time.sleep(20)
             while True:
                 pwmL = 250
                 pwmR = 220
                 ret,frame = video.read()
                 if ret == True:
                     print("Rock_phase")
-                    close,frame = utilities.filter_green(frame)
+                    close,frame = utilities.filter_color(frame,"green")
                     original = frame.copy()
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
