@@ -93,21 +93,20 @@ try:
                 ret,frame = video.read()
                 if ret == True:
                     print("Line tracking")
-                    close,frame = utilities.filter_green(frame)
+                    close,frame = utilities.filter_color(frame,"green")
+                    white_mask, white_frame = utilities.filter_color(frame,"white")
                     original = frame.copy()
+
+                    white_area = cv2.countNonZero(white_mask)
+                    image_area = frame.shape[0]*frame.shape[1]
+                    white_percent = (white_area/image_area)*100
 
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if green_percent < 20:
-                        STATE = 1
-                        # runMotor(ser,4,0,0)
-                        # time.sleep(2)
-                        # runMotor(ser,1,pwmL,pwmR)
-                        # time.sleep(2)
-                        # runMotor(4,0,0)
-                        # time.sleep(2)
-                        continue
+                    if white_percent > 10:
+                        break
+                    cv2.putText(frame,"White percent " + str(white_percent),(50,400),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     res = cv2.bitwise_and(original, original, mask=close)
                     
