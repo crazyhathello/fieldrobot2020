@@ -181,6 +181,7 @@ try:
                 pwmR = 220
                 ret,frame = video.read()
                 if ret == True:
+                    
                     print("Rock_phase")
                     close,frame = utilities.filter_color(frame,"green")
                     original = frame.copy()
@@ -188,6 +189,15 @@ try:
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
                     if green_percent > 25:
+                        while True:
+                            runMotor(ser,0,pwmL,pwmR)
+                            ret,frame_original = video.read()
+                            white_mask, white_frame = utilities.filter_color(frame_original,"white")
+                            white_area = cv2.countNonZero(white_mask)
+                            image_area = frame.shape[0]*frame.shape[1]
+                            white_percent = (white_area/image_area)*100
+                            if white_percent > 3.2:
+                                break
                         break
                     runMotor(ser,0,pwmL,pwmR)
                 #cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
