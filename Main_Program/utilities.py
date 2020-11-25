@@ -84,8 +84,8 @@ def filter_green(frame):
 
     # Color filtering
     # HSV ranges (0,76,0) to (20,255,255) (use range_finder.py)
-    lower_green = np.array([37, 115, 20])
-    upper_green = np.array([60, 255, 255])
+    lower_green = np.array([27, 84, 25])
+    upper_green = np.array([46, 255, 255])
     
     mask = cv2.inRange(path, lower_green, upper_green)
 

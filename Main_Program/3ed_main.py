@@ -12,7 +12,7 @@ X_MID = 690
 pwm_delta = 0
 HSV = False
 GUI = True
-DEBUG = False
+DEBUG = True
 STATE_MAP = [3,0,1,0,1,0,2,0,2,0]
 
 def startSerialCom():
@@ -46,6 +46,8 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
 def checkHSV(capture):
     if HSV:
         ret,img = capture.read()
+        for i in range(20):
+            ret,img = capture.read()
         scale_percent = 50 # percent of original size
         width = int(img.shape[1] * scale_percent / 100)
         height = int(img.shape[0] * scale_percent / 100)
@@ -159,9 +161,11 @@ try:
             continue
 
         elif STATE == 3: # rock
+            runMotor(ser,0,250,220)
+            time.sleep(20)
             while True:
-                pwmL = pwmL_base
-                pwmR = pwmR_base
+                pwmL = 250
+                pwmR = 220
                 ret,frame = video.read()
                 if ret == True:
                     print("Rock_phase")
@@ -178,9 +182,11 @@ try:
 
         elif STATE == 4:#watering
             continue  
-        elif STATE ==5: 
-            runMotor(ser,0,pwmL_base,pwmR_base)
-            time.sleep(2)
+        elif STATE == 5: 
+            print("debug mode")
+            runMotor(ser,0,250,220)
+            time.sleep(20)
+            continue
 except KeyboardInterrupt:
     pass
 
