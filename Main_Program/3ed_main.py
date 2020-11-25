@@ -13,8 +13,8 @@ pwm_delta = 0
 HSV = False
 GUI = True
 DEBUG = False
-#STATE_MAP = [3,1,0,1,0,2,0,2,0]
-STATE_MAP = [4,2,0,2,0]
+STATE_MAP = [3,1,0,1,0,2,0,2,0]
+#STATE_MAP = [4,2,0,2,0]
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
