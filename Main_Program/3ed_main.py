@@ -4,16 +4,16 @@ import numpy as np
 import utilities
 import time
 pwmL_base = 210
-pwmR_base = 175
+pwmR_base = 155
 pwmL = 0
 pwmR = 0
 x_delta = 0
 X_MID = 690
 pwm_delta = 0
-HSV = False
+HSV = True
 GUI = True
-DEBUG = True
-STATE_MAP = [3,0,1,0,1,0,2,0,2,0]
+DEBUG = False
+STATE_MAP = [0,0,1,0,1,0,2,0,2,0]
 
 def startSerialCom():
     ser = serial.Serial(
@@ -78,7 +78,7 @@ if checkHSV(video):
 if DEBUG:
     try:
         while True:
-            runMotor(ser,0,250,220)
+            runMotor(ser,0,pwmL_base,pwmR_base)
             time.sleep(0.1)
     except KeyboardInterrupt:
         pass
