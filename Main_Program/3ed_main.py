@@ -75,6 +75,13 @@ if checkHSV(video):
 # time.sleep(2)
 
 # STATES: 0(line follow), 1(right turn), 2(left turn),3(rock),4(watering),5(special)
+if DEBUG:
+    try:
+        while True:
+            runMotor(ser,0,250,220)
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        pass
 try:
     for STATE in STATE_MAP:
         if DEBUG:
@@ -185,7 +192,7 @@ try:
         elif STATE == 5: 
             print("debug mode")
             runMotor(ser,0,250,220)
-            time.sleep(20)
+            time.sleep(0.1)
             continue
 except KeyboardInterrupt:
     pass
