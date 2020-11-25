@@ -8,11 +8,11 @@ pwmR_base = 155
 pwmL = 0
 pwmR = 0
 x_delta = 0
-X_MID = 670
+X_MID = 690
 pwm_delta = 0
 HSV = False
 GUI = True
-DEBUG = False
+DEBUG = True
 #STATE_MAP = [3,1,0,1,0,2,0,2,0]
 STATE_MAP = [0,2,0,2,0]
 def startSerialCom():
@@ -78,7 +78,7 @@ if checkHSV(video):
 if DEBUG:
     try:
         while True:
-            runMotor(ser,0,pwmL_base,pwmR_base)
+            runMotor(ser,0,255,195)
             time.sleep(0.1)
     except KeyboardInterrupt:
         pass
@@ -137,10 +137,10 @@ try:
                         pwmL = 250
                     if pwmR > 250:
                         pwmR = 250
-                    if pwmL < 100:
-                        pwmL = 100
-                    if pwmR < 100:
-                        pwmR = 100
+                    if pwmL < 80:
+                        pwmL = 80
+                    if pwmR < 80:
+                        pwmR = 80
 
                     runMotor(ser,0,pwmL,pwmR)
                     
