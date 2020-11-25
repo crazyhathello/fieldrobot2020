@@ -3,17 +3,17 @@ import cv2
 import numpy as np
 import utilities
 import time
-pwmL_base = 205
-pwmR_base = 195
+pwmL_base = 210
+pwmR_base = 175
 pwmL = 0
 pwmR = 0
 x_delta = 0
-X_MID = 670
+X_MID = 690
 pwm_delta = 0
 HSV = False
 GUI = True
 DEBUG = False
-STATE_MAP = [3,0,1,0,1,4,2,0,2,0]
+STATE_MAP = [3,0,1,0,1,0,2,0,2,0]
 
 def startSerialCom():
     ser = serial.Serial(
@@ -45,8 +45,14 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
 
 def checkHSV(capture):
     if HSV:
-        ret,frame = capture.read()
-        utilities.find_range(frame)
+        ret,img = capture.read()
+        scale_percent = 50 # percent of original size
+        width = int(img.shape[1] * scale_percent / 100)
+        height = int(img.shape[0] * scale_percent / 100)
+        dim = (width, height)
+        # resize image
+        resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+        utilities.find_range(resized)
     return True
 
 ser = startSerialCom()
@@ -84,7 +90,7 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if green_percent < 38:
+                    if green_percent < 20:
                         STATE = 1
                         # runMotor(ser,4,0,0)
                         # time.sleep(2)
@@ -107,7 +113,7 @@ try:
                     # else:
                     #     pwmL -= pwm_delta
                     #     pwmR += pwm_delta
-                    if x_delta < 0:
+                    if x_delta > 0:
                         pwmL += pwm_delta
                         pwmR -= pwm_delta
                     else:
@@ -140,16 +146,16 @@ try:
             #time.sleep(2)
             runMotor(ser,1,pwmL_base,pwmR_base)
             time.sleep(1.7)
-            runMotor(ser,4,0,0)
-            time.sleep(1)
+            #runMotor(ser,4,0,0)
+            #time.sleep(1)
             continue
 
         elif STATE == 2:
             #time.sleep(2)
             runMotor(ser,2,pwmL_base,pwmR_base)
             time.sleep(1.7)
-            runMotor(ser,4,0,0)
-            time.sleep(1)
+            #runMotor(ser,4,0,0)
+            #time.sleep(1)
             continue
 
         elif STATE == 3: # rock
@@ -164,7 +170,7 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if green_percent > 50:
+                    if green_percent > 25:
                         break
                     runMotor(ser,0,pwmL,pwmR)
                 #cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)

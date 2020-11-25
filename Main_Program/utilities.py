@@ -7,7 +7,7 @@ def find_range(img):
         pass
 
     # Create a window
-    cv2.namedWindow('image')
+    cv2.namedWindow('image',cv2.WINDOW_NORMAL)
 
     # create trackbars for color change
     cv2.createTrackbar('HMin','image',0,179,nothing) # Hue is from 0-179 for Opencv
@@ -84,7 +84,7 @@ def filter_green(frame):
 
     # Color filtering
     # HSV ranges (0,76,0) to (20,255,255) (use range_finder.py)
-    lower_green = np.array([18, 115, 0])
+    lower_green = np.array([37, 115, 20])
     upper_green = np.array([60, 255, 255])
     
     mask = cv2.inRange(path, lower_green, upper_green)
@@ -96,8 +96,8 @@ def filter_green(frame):
     erosion = cv2.erode(close,erosion_kernel,iterations = 1)
     dilation = cv2.dilate(erosion,erosion_kernel,iterations = 1)
     
-    mask = cv2.fillPoly(dilation, np.array([[(0,0),(0,600),(200,0)]],dtype=np.int32), 0)
-    mask = cv2.fillPoly(mask, np.array([[(1152,0),(952,0),(1152,600)]],dtype=np.int32),0)
+    #mask = cv2.fillPoly(dilation, np.array([[(0,0),(0,600),(200,0)]],dtype=np.int32), 0)
+    #mask = cv2.fillPoly(mask, np.array([[(1152,0),(952,0),(1152,600)]],dtype=np.int32),0)
 
     return mask, original
 
