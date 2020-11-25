@@ -8,13 +8,13 @@ pwmR_base = 155
 pwmL = 0
 pwmR = 0
 x_delta = 0
-X_MID = 690
+X_MID = 670
 pwm_delta = 0
 HSV = False
 GUI = True
 DEBUG = False
-STATE_MAP = [3,0,1,0,1,0,2,0,2,0]
-
+#STATE_MAP = [3,1,0,1,0,2,0,2,0]
+STATE_MAP = [0,2,0,2,0]
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
@@ -127,20 +127,20 @@ try:
                     #     pwmL -= pwm_delta
                     #     pwmR += pwm_delta
                     if x_delta > 0:
-                        pwmL += pwm_delta
-                        pwmR -= pwm_delta
+                        pwmL += int(1.5*pwm_delta)
+                        pwmR -= int(1*pwm_delta)
                     else:
-                        pwmL += int(1.2*pwm_delta)
+                        pwmL += int(1*pwm_delta)
                         pwmR -= pwm_delta
                     # pwm gate
                     if pwmL > 250:
                         pwmL = 250
                     if pwmR > 250:
                         pwmR = 250
-                    if pwmL < 0:
-                        pwmL = 0
-                    if pwmR < 0:
-                        pwmR = 0
+                    if pwmL < 100:
+                        pwmL = 100
+                    if pwmR < 100:
+                        pwmR = 100
 
                     runMotor(ser,0,pwmL,pwmR)
                     
@@ -159,8 +159,12 @@ try:
 
         elif STATE == 1:
             #time.sleep(2)
+            runMotor(ser,0,pwmL_base,pwmR_base)
+            time.sleep(1)
             runMotor(ser,1,pwmL_base,pwmR_base)
-            time.sleep(1.7)
+            time.sleep(2.5)
+            runMotor(ser,0,pwmL_base,pwmR_base)
+            time.sleep(1)
             #runMotor(ser,4,0,0)
             #time.sleep(1)
             continue
@@ -168,7 +172,7 @@ try:
         elif STATE == 2:
             #time.sleep(2)
             runMotor(ser,2,pwmL_base,pwmR_base)
-            time.sleep(1.7)
+            time.sleep(2.3)
             #runMotor(ser,4,0,0)
             #time.sleep(1)
             continue
@@ -177,8 +181,8 @@ try:
             #runMotor(ser,0,250,220)
             #time.sleep(20)
             while True:
-                pwmL = 250
-                pwmR = 220
+                pwmL = 255
+                pwmR = 195
                 ret,frame = video.read()
                 if ret == True:
                     
@@ -196,7 +200,8 @@ try:
                             white_area = cv2.countNonZero(white_mask)
                             image_area = frame.shape[0]*frame.shape[1]
                             white_percent = (white_area/image_area)*100
-                            if white_percent > 3.2:
+                            if white_percent > 2.4:
+                                print("+++++++++++++++++++++++")
                                 break
                         break
                     runMotor(ser,0,pwmL,pwmR)
