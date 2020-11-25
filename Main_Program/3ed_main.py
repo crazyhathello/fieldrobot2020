@@ -12,7 +12,7 @@ X_MID = 690
 pwm_delta = 0
 HSV = False
 GUI = True
-DEBUG = True
+DEBUG = False
 #STATE_MAP = [3,1,0,1,0,2,0,2,0]
 STATE_MAP = [4,2,0,2,0]
 def startSerialCom():
@@ -210,17 +210,19 @@ try:
 
         elif STATE == 4:#watering
             runMotor(ser,0,255,195)
-            time.sleep(2)
-            runMotor(ser,4,0,0)
-            time.sleep(2)
-            runMotor(ser,0,255,195)
-            time.sleep(2)
-            runMotor(ser,4,0,0)
+            time.sleep(4)
+            runMotor(ser,0,100,75)
             time.sleep(2)
             runMotor(ser,0,255,195)
+            time.sleep(10)
+            runMotor(ser,0,100,75)
             time.sleep(2)
-            runMotor(ser,4,0,0)
+            runMotor(ser,0,255,195)
+            time.sleep(3)
+            runMotor(ser,0,100,75)
             time.sleep(2)
+            runMotor(ser,0,255,195)
+            time.sleep(3)
             continue  
         elif STATE == 5: 
             print("debug mode")
