@@ -105,8 +105,8 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if white_percent > 3.2:
-                        break
+                    #if white_percent > 3.2:
+                    #    break
                     cv2.putText(frame,"White percent " + str(white_percent),(50,400),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     res = cv2.bitwise_and(original1, original1, mask=close)
