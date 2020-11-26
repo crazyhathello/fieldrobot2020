@@ -49,7 +49,7 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
 def checkHSV(capture):
     if HSV:
         ret,img = capture.read()
-        for i in range(10):
+        for i in range(1):
             ret,img = capture.read()
         scale_percent = 50 # percent of original size
         width = int(img.shape[1] * scale_percent / 100)
@@ -63,6 +63,7 @@ def checkHSV(capture):
 ser = startSerialCom()
 
 video = cv2.VideoCapture(0)
+video.set(cv2.CAP_PROP_EXPOSURE,-4)
 if video.isOpened() == False:
     print("Error opening video stream or file")
 if checkHSV(video):
@@ -205,16 +206,17 @@ try:
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
                     if green_percent > 25:
-                        while True:
-                            runMotor(ser,0,pwmL,pwmR)
-                            ret,frame_original = video.read()
-                            white_mask, white_frame = utilities.filter_color(frame_original,"white")
-                            white_area = cv2.countNonZero(white_mask)
-                            image_area = frame.shape[0]*frame.shape[1]
-                            white_percent = (white_area/image_area)*100
-                            if white_percent > 1.5:
-                                print("+++++++++++++++++++++++")
-                                break
+
+                        # while True:
+                        #     runMotor(ser,0,pwmL,pwmR)
+                        #     ret,frame_original = video.read()
+                        #     white_mask, white_frame = utilities.filter_color(frame_original,"white")
+                        #     white_area = cv2.countNonZero(white_mask)
+                        #     image_area = frame.shape[0]*frame.shape[1]
+                        #     white_percent = (white_area/image_area)*100
+                        #     if white_percent > 1.5:
+                        #         print("+++++++++++++++++++++++")
+                        #         break
                         break
                     runMotor(ser,0,pwmL,pwmR)
                 #cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
