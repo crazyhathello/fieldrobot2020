@@ -10,11 +10,14 @@ pwmR = 0
 x_delta = 0
 X_MID = 690
 pwm_delta = 0
-HSV = False
+HSV = True
 GUI = True
 DEBUG = False
 STATE_MAP = [3,1,0,2,0]
-#STATE_MAP = [4,2,0,2,0]
+#STATE_MAP = [1,2]
+#STATE_MAP = [1]
+#STATE_MAP = [2]
+#STATE_MAP = [0]
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
@@ -105,8 +108,8 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    if white_percent > 3.2:
-                        break
+                    #if white_percent > 3.2:
+                    #   break
                     cv2.putText(frame,"White percent " + str(white_percent),(50,400),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     res = cv2.bitwise_and(original1, original1, mask=close)
@@ -162,7 +165,7 @@ try:
             runMotor(ser,0,pwmL_base,pwmR_base)
             time.sleep(3.5)
             runMotor(ser,1,pwmL_base,pwmR_base)
-            time.sleep(2.5)
+            time.sleep(2.7)
             runMotor(ser,0,pwmL_base,pwmR_base)
             time.sleep(7)
             runMotor(ser,1,pwmL_base,pwmR_base)
@@ -177,7 +180,7 @@ try:
             runMotor(ser,0,pwmL_base,pwmR_base)
             time.sleep(3.5)
             runMotor(ser,2,pwmL_base,pwmR_base)
-            time.sleep(2.5)
+            time.sleep(2.7)
             runMotor(ser,0,pwmL_base,pwmR_base)
             time.sleep(7)
             runMotor(ser,2,pwmL_base,pwmR_base)
@@ -187,8 +190,8 @@ try:
             continue
 
         elif STATE == 3: # rock
-            #runMotor(ser,0,250,220)
-            #time.sleep(20)
+            runMotor(ser,0,255,195)
+            time.sleep(20)
             while True:
                 pwmL = 255
                 pwmR = 195
