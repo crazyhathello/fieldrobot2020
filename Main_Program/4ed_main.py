@@ -13,7 +13,7 @@ pwm_delta = 0
 HSV = False
 GUI = True
 DEBUG = False
-STATE_MAP = [3,1,0,2,0,2,0]
+STATE_MAP = [3,1,0,2,0]
 #STATE_MAP = [4,2,0,2,0]
 def startSerialCom():
     ser = serial.Serial(
@@ -160,7 +160,7 @@ try:
         elif STATE == 1:
             #time.sleep(2)
             runMotor(ser,0,pwmL_base,pwmR_base)
-            time.sleep(4.5)
+            time.sleep(3.5)
             runMotor(ser,1,pwmL_base,pwmR_base)
             time.sleep(2.5)
             runMotor(ser,0,pwmL_base,pwmR_base)
@@ -174,8 +174,14 @@ try:
 
         elif STATE == 2:
             #time.sleep(2)
+            runMotor(ser,0,pwmL_base,pwmR_base)
+            time.sleep(3.5)
             runMotor(ser,2,pwmL_base,pwmR_base)
-            time.sleep(2.3)
+            time.sleep(2.5)
+            runMotor(ser,0,pwmL_base,pwmR_base)
+            time.sleep(7)
+            runMotor(ser,2,pwmL_base,pwmR_base)
+            time.sleep(2.5)
             #runMotor(ser,4,0,0)
             #time.sleep(1)
             continue
