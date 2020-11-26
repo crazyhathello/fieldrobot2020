@@ -85,11 +85,11 @@ def filter_color(frame,color):
     # Color filtering
     # HSV ranges (0,76,0) to (20,255,255) (use range_finder.py)
     if color == "green":
-        lower = np.array([25, 61, 0])
+        lower = np.array([30, 35, 0])
         upper = np.array([53, 255, 255])
     elif color == "white":
-        lower = np.array([0,0,175])
-        upper = np.array([179,41,255])
+        lower = np.array([0,0,241])
+        upper = np.array([179,4,255])
 
     mask = cv2.inRange(path, lower, upper)
 

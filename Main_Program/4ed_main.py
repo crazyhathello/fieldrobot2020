@@ -10,14 +10,14 @@ pwmR = 0
 x_delta = 0
 X_MID = 690
 pwm_delta = 0
-HSV = True
+HSV = False
 GUI = True
 DEBUG = False
-STATE_MAP = [3,1,0,2,0]
+#STATE_MAP = [3,1,0,2,0]
 #STATE_MAP = [1,2]
 #STATE_MAP = [1]
 #STATE_MAP = [2]
-#STATE_MAP = [0]
+STATE_MAP = [0,1]
 def startSerialCom():
     ser = serial.Serial(
         port='/dev/ttyACM0',
@@ -49,7 +49,7 @@ def runMotor(ser,dir,pwm1,pwm2):  ## dir: 0(forward), 1(right), 2(left), 3(backw
 def checkHSV(capture):
     if HSV:
         ret,img = capture.read()
-        for i in range(20):
+        for i in range(10):
             ret,img = capture.read()
         scale_percent = 50 # percent of original size
         width = int(img.shape[1] * scale_percent / 100)
@@ -108,7 +108,7 @@ try:
                     green_area = cv2.countNonZero(close)
                     image_area = frame.shape[0]*frame.shape[1]
                     green_percent = (green_area/image_area)*100
-                    #if white_percent > 3.2:
+                    #if white_percent > 100:
                     #   break
                     cv2.putText(frame,"White percent " + str(white_percent),(50,400),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
                     cv2.putText(frame,"Green percent " + str(green_percent),(50,300),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
@@ -212,7 +212,7 @@ try:
                             white_area = cv2.countNonZero(white_mask)
                             image_area = frame.shape[0]*frame.shape[1]
                             white_percent = (white_area/image_area)*100
-                            if white_percent > 2.4:
+                            if white_percent > 1.5:
                                 print("+++++++++++++++++++++++")
                                 break
                         break
